@@ -80,7 +80,34 @@ const overlayWordSelect = $('overlay-word-select'), overlayRoundEnd = $('overlay
 const contextMenu = $('context-menu'), ctxName = $('ctx-name'), ctxPts = $('ctx-pts'), ctxAv = $('ctx-av');
 const avImg = $('av-img'); 
 
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', () => { // ── THE ULTIMATE MOBILE KEYBOARD FIX ──
+  // Automatically resizes the body to fit exactly above the keyboard
+  const adjustViewport = () => {
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.body.style.height = vh + 'px';
+    window.scrollTo(0, 0); // Forces the browser not to pan upwards
+  };
+  
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', adjustViewport);
+  }
+  window.addEventListener('resize', adjustViewport);
+  adjustViewport(); // Run once on load
+
+  // Tell the CSS when the keyboard is actually open
+  const chatInputEl = document.getElementById('chat-input');
+  if (chatInputEl) {
+    chatInputEl.addEventListener('focus', () => {
+      document.body.classList.add('keyboard-open');
+      setTimeout(() => window.scrollTo(0, 0), 100);
+      setTimeout(resizeCanvas, 150); // Redraw canvas to fit new space
+    });
+    chatInputEl.addEventListener('blur', () => {
+      document.body.classList.remove('keyboard-open');
+      setTimeout(() => window.scrollTo(0, 0), 100);
+      setTimeout(resizeCanvas, 150);
+    });
+  }
    /* ════════════════════════════════════════════
      THEME MANAGER
   ════════════════════════════════════════════ */
