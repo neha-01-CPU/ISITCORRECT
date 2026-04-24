@@ -1346,3 +1346,16 @@ html[data-theme="dark"] .re-score-row { background: rgba(255,255,255,0.08) !impo
 html[data-theme="dark"] .bg-blob.blob-1 { background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%) !important; }
 html[data-theme="dark"] .bg-blob.blob-2 { background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%) !important; }
 html[data-theme="dark"] .bg-blob.blob-3 { background: radial-gradient(circle, rgba(16,185,129,0.10), transparent 70%) !important; }
+/* ================================================================
+   SMART KEYBOARD MODE (JS-Triggered)
+================================================================ */
+body.keyboard-open #leaderboard-panel { 
+  display: none !important; 
+}
+body.keyboard-open .canvas-col { 
+  flex: 3 !important; 
+}
+body.keyboard-open .game-header {
+  min-height: 40px !important;
+  padding: 2px 10px !important;
+}
