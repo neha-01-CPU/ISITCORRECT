@@ -1038,7 +1038,8 @@ html, body {
 @media (max-width: 767px) {
   #screen-game.active {
     display: flex; flex-direction: column;
-    height: 100dvh; padding: 6px; gap: 6px;
+    height: 100%; /* FIX: Changed from 100dvh to 100% so Android keyboard doesn't push it up */
+    padding: 6px; gap: 6px;
     overflow: hidden;
   }
 
@@ -1053,13 +1054,13 @@ html, body {
     flex-direction: column; padding-bottom: 2px;
   }
 
-/* Fluid Canvas Area (60% Split) */
+  /* Fluid Canvas Area */
   .canvas-col { 
     flex: 1.5; height: auto; min-height: 0; order: 1; 
   }
   .canvas-wrap { flex: 1; height: 100%; }
 
-/* Toolbar container full width */
+  /* Toolbar container full width */
   .toolbar-container { 
     width: 100% !important; 
     display: flex !important; 
@@ -1070,17 +1071,17 @@ html, body {
     width: 100% !important;
     padding: 6px 12px !important;
     border-radius: var(--radius-sm) !important;
-    justify-content: space-between !important; /* Spreads them perfectly on phone */
+    justify-content: space-between !important; 
   }
   .toolbar-glass::-webkit-scrollbar { display: none; }
   .toolbar-glass .tool-btn { width: 36px !important; height: 36px !important; flex-shrink: 0; }
   .toolbar-glass .tool-btn svg { width: 16px !important; height: 16px !important; }
 
- /* Fluid Bottom Row (40% Split) */
+  /* Fluid Bottom Row */
   .bottom-mobile-row {
     flex: 1; height: auto; min-height: 0; order: 2; display: flex; gap: 6px;
   }
-  }
+  
   #leaderboard-panel, #chat-panel { width: 50%; height: 100%; flex: 1; min-height: 0; }
 
   /* Full-width seamless pill at the bottom */
