@@ -50,8 +50,6 @@
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
-  position: fixed; /* 🔥 Locks the browser from panning */
-  top: 0; left: 0; /* 🔥 Anchors it to the top */
   font-family: var(--f-body);
   background: linear-gradient(145deg, #b8d4f5 0%, #cce0fc 45%, #ddeeff 100%);
   color: var(--txt);
@@ -111,10 +109,7 @@ html, body {
    SCREENS
 ════════════════════════════════════════════ */
 .screen {
-  position: absolute; /* 🔥 Changed from fixed so it obeys body height */
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 10;
+  position: fixed; inset: 0; z-index: 10;
   display: none; flex-direction: column;
 }
 .screen.active { display: flex; align-items: center; justify-content: center; }
