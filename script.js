@@ -172,8 +172,16 @@ const BotManager = {
       const rand = Math.random();
       if (rand < 0.15 && S.currentWord) {
         bot.guessed = true;
-        const pts = Math.max(10, Math.round(S.timeLeft / S.drawTime * 100));
+        
+        // 🔥 NEW: Dynamic Scoring for Bots
+        const pts = Math.floor((S.timeLeft / S.drawTime) * 400) + 100;
         bot.score += pts;
+
+        // 🔥 NEW: Reward the Artist when a bot guesses!
+        if (S.players[S.drawerIdx]) {
+          S.players[S.drawerIdx].score += 50;
+        }
+
         addChat('correct', bot.name, `🎉 Guessed the word!`);
         showToast(`✅ ${bot.name} guessed it!`, 't-correct');
         buildLeaderboard();
@@ -450,10 +458,10 @@ function endRound(allGuessed = false) {
   const oldBtnWrap = document.getElementById('podium-btns');
   if (oldBtnWrap) oldBtnWrap.style.display = 'none';
   
+  // 🔥 NEW: Announce total Artist earnings at the end of the round!
   if (S.guessedIds.size > 0 && S.players[S.drawerIdx]) {
-    const bonus = Math.min(S.guessedIds.size * 30, 150);
-    S.players[S.drawerIdx].score += bonus;
-    addChat('system', '', `🎨 ${S.players[S.drawerIdx].name} got +${bonus} bonus points!`);
+    const totalArtistBonus = S.guessedIds.size * 50;
+    addChat('system', '', `🎨 ${S.players[S.drawerIdx].name} earned +${totalArtistBonus} pts for drawing well!`);
   }
 
   const sorted = [...S.players].sort((a, b) => b.score - a.score);
@@ -490,7 +498,6 @@ function endRound(allGuessed = false) {
     } 
   }, 1000);
 }
-
 function nextRound() {
   S.round++; 
   S.drawerIdx = (S.drawerIdx + 1) % S.players.length; S.isDrawer = S.players[S.drawerIdx].id === S.myId;
@@ -778,13 +785,24 @@ function sendGuess() {
 
   const guess = val.toLowerCase().trim(), word = (S.currentWord || '').toLowerCase().trim();
   if (word && guess === word) {
-    const pts = Math.max(10, Math.round(S.timeLeft / S.drawTime * 100)), me = S.players.find(p => p.isSelf);
+    
+    // 🔥 NEW: High-Octane Dynamic Scoring (100 to 500 pts based on speed)
+    const pts = Math.floor((S.timeLeft / S.drawTime) * 400) + 100;
+    
+    const me = S.players.find(p => p.isSelf);
     if (me) { me.score += pts; me.guessed = true; }
     S.guessedIds.add(S.myId);
+    
+    // 🔥 NEW: Give points to the Artist instantly
+    if (S.players[S.drawerIdx]) {
+      S.players[S.drawerIdx].score += 50; // 50 pts per person who guesses
+    }
+
     addChat('correct', S.playerName, `🎉 Guessed the word! (+${pts} pts)`);
     showToast(`✅ You guessed it! +${pts} pts`, 't-correct');
     floatPoints(`+${pts}`, window.innerWidth * 0.5, window.innerHeight * 0.4);
     buildLeaderboard();
+    
     const nonDrawers = S.players.filter(p => p.id !== S.players[S.drawerIdx]?.id);
     if (nonDrawers.every(p => p.guessed)) { clearInterval(S.timerInterval); setTimeout(() => endRound(true), 800); }
   } else {
