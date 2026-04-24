@@ -80,7 +80,34 @@ const overlayWordSelect = $('overlay-word-select'), overlayRoundEnd = $('overlay
 const contextMenu = $('context-menu'), ctxName = $('ctx-name'), ctxPts = $('ctx-pts'), ctxAv = $('ctx-av');
 const avImg = $('av-img'); 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { 
+   /* ════════════════════════════════════════════
+     THEME MANAGER
+  ════════════════════════════════════════════ */
+  const themeCheckboxes = document.querySelectorAll('.theme-checkbox');
+  
+  function applyTheme(isDark) {
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('picazo-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('picazo-theme', 'light');
+    }
+    // Visually sync all toggle buttons
+    themeCheckboxes.forEach(cb => cb.checked = isDark);
+  }
+
+  // Init from localStorage
+  if (localStorage.getItem('picazo-theme') === 'dark') {
+    applyTheme(true);
+  }
+
+  // Listeners
+  themeCheckboxes.forEach(cb => {
+    cb.addEventListener('change', (e) => applyTheme(e.target.checked));
+  });
+
   const overlays = ['overlay-waiting', 'overlay-word-select', 'overlay-round-end'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
