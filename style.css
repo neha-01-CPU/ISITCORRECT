@@ -50,6 +50,8 @@
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
+  position: fixed; /* 🔥 SILVER BULLET: Locks screen in place so keyboard can't scroll it */
+  inset: 0;
   font-family: var(--f-body);
   background: linear-gradient(145deg, #b8d4f5 0%, #cce0fc 45%, #ddeeff 100%);
   color: var(--txt);
@@ -1038,7 +1040,7 @@ html, body {
 @media (max-width: 767px) {
   #screen-game.active {
     display: flex; flex-direction: column;
-    height: 100%; /* FIX: Changed from 100dvh to 100% so Android keyboard doesn't push it up */
+    height: 100%; 
     padding: 6px; gap: 6px;
     overflow: hidden;
   }
