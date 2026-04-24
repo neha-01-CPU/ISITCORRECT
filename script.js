@@ -150,6 +150,32 @@ document.addEventListener('DOMContentLoaded', () => { // ── THE ULTIMATE MOB
     }
   });
   setupMobileLayout();
+   // ── THE ULTIMATE MOBILE KEYBOARD FIX ──
+  // Asks the phone exactly how many pixels are available above the keyboard
+  const adjustViewport = () => {
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.body.style.height = vh + 'px';
+    window.scrollTo(0, 0); // Physically forbids the browser from scrolling up
+  };
+  
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', adjustViewport);
+  }
+  window.addEventListener('resize', adjustViewport);
+  adjustViewport(); // Run once on load
+
+  // Tells your CSS to trigger the "Smart Keyboard Mode" when typing
+  const chatInputEl = document.getElementById('chat-input');
+  if (chatInputEl) {
+    chatInputEl.addEventListener('focus', () => {
+      document.body.classList.add('keyboard-open');
+      setTimeout(() => window.scrollTo(0, 0), 100);
+      setTimeout(resizeCanvas, 150); 
+    });
+    chatInputEl.addEventListener('blur', () => {
+      document.body.classList.remove('keyboard-open');
+      setTimeout(() => window.scrollTo(0, 0), 100);
+      setTimeout(resizeCanvas, 150);
 });
 
 /* ════════════════════════════════════════════
