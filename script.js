@@ -293,7 +293,21 @@ function setupMobileLayout() {
   }
   setTimeout(resizeCanvas, 50);
 }
-window.addEventListener('resize', () => { setupMobileLayout(); resizeCanvas(); });
+let lastHeight = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  const newHeight = window.innerHeight;
+
+  // 🚫 Ignore keyboard-triggered resize (height drop)
+  const heightDiff = Math.abs(newHeight - lastHeight);
+
+  if (heightDiff < 150) {
+    setupMobileLayout();
+    resizeCanvas();
+  }
+
+  lastHeight = newHeight;
+});
 
 /* ════════════════════════════════════════════
    GAME INIT & LEADERBOARD 
