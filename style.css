@@ -48,8 +48,17 @@
 }
 
 html, body {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
   overflow: hidden;
+  position: fixed;
+  inset: 0;
+
+  touch-action: manipulation;
+
   font-family: var(--f-body);
   background: linear-gradient(145deg, #b8d4f5 0%, #cce0fc 45%, #ddeeff 100%);
   color: var(--txt);
@@ -1036,10 +1045,13 @@ html, body {
    MOBILE — PORTRAIT (< 768px)
 ════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  #screen-game.active {
-    display: flex; flex-direction: column;
-    height: 100dvh; padding: 6px; gap: 6px;
-    overflow: hidden;
+#screen-game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
   }
 
   .game-header { padding: 5px 10px; min-height: 52px; flex-shrink: 0; }
@@ -1358,4 +1370,52 @@ body.keyboard-open .canvas-col {
 body.keyboard-open .game-header {
   min-height: 40px !important;
   padding: 2px 10px !important;
+}
+/* =========================================
+   MOBILE KEYBOARD LOCK FIX
+========================================= */
+
+@media (max-width: 767px){
+
+  #screen-game{
+    position: fixed !important;
+    inset: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .game-body{
+    height: calc(100% - 56px) !important;
+    overflow: hidden !important;
+  }
+
+  .canvas-col{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .canvas-wrap{
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #chat-panel{
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+  }
+
+  .chat-messages{
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chat-form{
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 100 !important;
+    flex-shrink: 0 !important;
+  }
+
 }
