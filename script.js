@@ -91,8 +91,20 @@ document.addEventListener('DOMContentLoaded', () => { // ── THE ULTIMATE MOB
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', adjustViewport);
   }
-  window.addEventListener('resize', adjustViewport);
-  adjustViewport(); // Run once on load
+  let lastWidth = window.innerWidth;
+
+window.addEventListener('resize', () => {
+
+  adjustViewport();
+
+  // Only react when WIDTH changes (rotation/device resize)
+  if (window.innerWidth !== lastWidth) {
+    setupMobileLayout();
+    resizeCanvas();
+    lastWidth = window.innerWidth;
+  }
+
+});
 
   // Tell the CSS when the keyboard is actually open
   const chatInputEl = document.getElementById('chat-input');
@@ -320,7 +332,7 @@ function setupMobileLayout() {
   }
   setTimeout(resizeCanvas, 50);
 }
-window.addEventListener('resize', () => { setupMobileLayout(); resizeCanvas(); });
+
 
 /* ════════════════════════════════════════════
    GAME INIT & LEADERBOARD 
