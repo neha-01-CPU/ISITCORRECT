@@ -95,14 +95,33 @@ document.addEventListener('DOMContentLoaded', () => { // ── THE ULTIMATE MOB
 
 window.addEventListener('resize', () => {
 
-  adjustViewport();
+  let lastWidth = window.innerWidth;
+let lastHeight = window.innerHeight;
 
-  // Only react when WIDTH changes (rotation/device resize)
-  if (window.innerWidth !== lastWidth) {
+window.addEventListener("resize", () => {
+
+  const currentWidth = window.innerWidth;
+  const currentHeight = window.innerHeight;
+
+  const widthChanged = currentWidth !== lastWidth;
+  const heightDiff = Math.abs(currentHeight - lastHeight);
+
+  // If keyboard opened (height changed a lot, width same)
+  const keyboardResize = !widthChanged && heightDiff > 120;
+
+  if (!keyboardResize) {
+    adjustViewport();
+  }
+
+  // Only full layout rebuild on width changes
+  if (widthChanged) {
     setupMobileLayout();
     resizeCanvas();
-    lastWidth = window.innerWidth;
   }
+
+  lastWidth = currentWidth;
+  lastHeight = currentHeight;
+});
 
 });
 
