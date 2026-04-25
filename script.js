@@ -88,29 +88,21 @@ document.addEventListener('DOMContentLoaded', () => { // ── THE ULTIMATE MOB
     window.scrollTo(0, 0); // Forces the browser not to pan upwards
   };
   
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', adjustViewport);
-  }
-  let lastWidth = window.innerWidth;
+ let lastHeight = window.innerHeight;
 
 window.addEventListener('resize', () => {
+  const newHeight = window.innerHeight;
 
-  let lastWidth = window.innerWidth;
-let lastHeight = window.innerHeight;
+  // ✅ Ignore keyboard resize
+  const heightDiff = Math.abs(newHeight - lastHeight);
 
-window.addEventListener("resize", () => {
+  if (heightDiff < 150) {
+    setupMobileLayout();
+    resizeCanvas();
+  }
 
-  const currentWidth = window.innerWidth;
-  const currentHeight = window.innerHeight;
-
-  const widthChanged = currentWidth !== lastWidth;
-  const heightDiff = Math.abs(currentHeight - lastHeight);
-
-  // If keyboard opened (height changed a lot, width same)
-  const keyboardResize = !widthChanged && heightDiff > 120;
-
-  if (!keyboardResize) {
-    adjustViewport();
+  lastHeight = newHeight;
+});
   }
 
   // Only full layout rebuild on width changes
